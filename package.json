@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "axios": "^0.24.0",
-    "http-server": "^14.0.0",
+    "fastify": "^3.24.1",
+    "fastify-static": "^4.5.0",
+    "fastify-websocket": "^4.0.0",
     "username-generator": "^1.1.0",
     "ws": "^8.3.0"
   },
@@ -9,9 +11,9 @@
   "description": "A chatroom using a websocket connection",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

@@ -443,7 +443,7 @@ document.head.appendChild(style_elem);
 let div_elem = document.createElement('div');
 div_elem.setAttribute('id', 'toastify-container');
 document.body.appendChild(div_elem);
-const MSG_socket = new WebSocket("ws://localhost:7071");
+const MSG_socket = new WebSocket("wss://websocket-chatroom-gh.herokuapp.com/websocket");
 const uid = Math.floor(Math.random() * 1000000);
 const set_name = prompt("Enter a name", "Anonymous");
 
@@ -472,7 +472,7 @@ MSG_socket.onopen = function (event) {
   }).showToast();
   var data = {
     "type": "init",
-    "license": "1530-2963-9118-5327-7458",
+    //"license": "123456789",
     "name": set_name,
     "uid": uid
   };

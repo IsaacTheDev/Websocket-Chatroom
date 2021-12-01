@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Websocket Chat Room test</title>
+</head>
+
+<body>
+    <h1>Websocket Chat Room</h1>
+    <div>
+        <button onclick="loadClient()">Load Client</button>
+    </div>
+    <div id="client">
+        <input type="text" id="message" placeholder="Message" />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <script>
+        function loadClient() {
+            let script = document.createElement('script');
+            script.src = "/client.js";
+            document.head.appendChild(script);
+        };
+    </script>
+</body>
+
+</html>
