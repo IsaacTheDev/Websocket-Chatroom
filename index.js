@@ -9,13 +9,11 @@ const clients = [];
 const auth_url = "yoururlhere";
 
 function accept(req, res) {
-    // all incoming requests must be websockets
     if (!req.headers.upgrade || req.headers.upgrade.toLowerCase() != 'websocket') {
         res.end();
         return;
     }
 
-    // can be Connection: keep-alive, Upgrade
     if (!req.headers.connection.match(/\bupgrade\b/i)) {
         res.end();
         return;
@@ -130,4 +128,4 @@ function onConnect(ws) {
     });
 };
 
-http.createServer(accept).listen(8080);
+http.createServer(accept).listen(process.env.PORT || 8080);
