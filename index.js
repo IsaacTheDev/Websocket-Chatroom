@@ -1,11 +1,28 @@
 const WebSocket = require('ws');
+const http = require('http');
 const axios = require('axios');
 const wss = new WebSocket.Server({
-    port: 7071
+    noServer: true
 });
 var UsernameGenerator = require('username-generator');
 const clients = [];
 const auth_url = "yoururlhere";
+
+function accept(req, res) {
+    // all incoming requests must be websockets
+    if (!req.headers.upgrade || req.headers.upgrade.toLowerCase() != 'websocket') {
+        res.end();
+        return;
+    }
+
+    // can be Connection: keep-alive, Upgrade
+    if (!req.headers.connection.match(/\bupgrade\b/i)) {
+        res.end();
+        return;
+    }
+
+    wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onConnect);
+}
 
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -40,7 +57,7 @@ function broadcastInactiveClient() {
     });
 }
 
-wss.on('connection', function connection(ws) {
+function onConnect(ws) {
     const clientId = uuidv4();
     ws.on('message', function incoming(message) {
         const data = JSON.parse(message);
@@ -90,11 +107,20 @@ wss.on('connection', function connection(ws) {
                 return client.id == clientId;
             });
             console.log(`(${clientId}) ${user.data.name} : ${data.message}`);
-            broadcast(JSON.stringify({
-                type: 'message',
-                name: user.data.name,
-                message: data.message.trim()
-            }));
+            if (data.message == "clients") {
+                ws.send(JSON.stringify({
+                    type: 'clients',
+                    clients: clients.map(function (client) {
+                        return client.data.name;
+                    })
+                }));
+            } else {
+                broadcast(JSON.stringify({
+                    type: 'message',
+                    name: user.data.name,
+                    message: data.message.trim()
+                }));
+            };
         } else if (data.type === 'leave') {
             broadcastInactiveClient();
         };
@@ -102,4 +128,6 @@ wss.on('connection', function connection(ws) {
     ws.on("close", () => {
         broadcastInactiveClient();
     });
-});
+};
+
+http.createServer(accept).listen(8080);

@@ -176,4 +176,3 @@ Project Link: [https://github.com/IsaacTheDev/Websocket-Chatroom](https://github
 [issues-url]: https://github.com/IsaacTheDev/Websocket-Chatroom/issues
 [license-shield]: https://img.shields.io/github/license/IsaacTheDev/Websocket-Chatroom.svg?style=for-the-badge
 [license-url]: https://github.com/IsaacTheDev/Websocket-Chatroom/blob/master/LICENSE.txt
-[product-screenshot]: images/screenshot.png

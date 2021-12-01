@@ -1,7 +1,26 @@
 {
   "dependencies": {
     "axios": "^0.24.0",
+    "http-server": "^14.0.0",
     "username-generator": "^1.1.0",
     "ws": "^8.3.0"
-  }
+  },
+  "name": "websocket-chatroom",
+  "description": "A chatroom using a websocket connection",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IsaacTheDev/Websocket-Chatroom.git"
+  },
+  "author": "IsaacTheDev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IsaacTheDev/Websocket-Chatroom/issues"
+  },
+  "homepage": "https://github.com/IsaacTheDev/Websocket-Chatroom#readme"
 }

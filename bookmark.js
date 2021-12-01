@@ -440,20 +440,35 @@
 let style_elem = document.createElement('style');
 style_elem.innerHTML = ".toastify{padding:12px 20px;color:#fff;display:inline-block;box-shadow:0 3px 6px -1px rgba(0,0,0,.12),0 10px 36px -4px rgba(77,96,232,.3);background:-webkit-linear-gradient(315deg,#73a5ff,#5477f5);background:linear-gradient(135deg,#73a5ff,#5477f5);position:fixed;opacity:0;transition:all .4s cubic-bezier(.215,.61,.355,1);border-radius:2px;cursor:pointer;text-decoration:none;max-width:calc(50% - 20px);z-index:2147483647}.toastify.on{opacity:1}.toast-close{opacity:.4;padding:0 5px}.toastify-right{right:15px}.toastify-left{left:15px}.toastify-top{top:-150px}.toastify-bottom{bottom:-150px}.toastify-rounded{border-radius:25px}.toastify-avatar{width:1.5em;height:1.5em;margin:-7px 5px;border-radius:2px}.toastify-center{margin-left:auto;margin-right:auto;left:0;right:0;max-width:fit-content;max-width:-moz-fit-content}@media only screen and (max-width:360px){.toastify-left,.toastify-right{margin-left:auto;margin-right:auto;left:0;right:0;max-width:fit-content}}";
 document.head.appendChild(style_elem);
+let div_elem = document.createElement('div');
+div_elem.setAttribute('id', 'toastify-container');
+document.body.appendChild(div_elem);
 const MSG_socket = new WebSocket("ws://localhost:7071");
 const uid = Math.floor(Math.random() * 1000000);
 const set_name = prompt("Enter a name", "Anonymous");
 
 function sendMessage(msg) {
-  MSG_socket.send(JSON.stringify({
-    "message": msg,
-    "type": "message"
-  }));
+  if (MSG_socket.readyState === MSG_socket.OPEN) {
+    if (msg == "hide") {
+      document.getElementById("toastify-container").style.display = "none";
+    } else if (msg == "show") {
+      document.getElementById("toastify-container").style.display = "block";
+    } else {
+      MSG_socket.send(JSON.stringify({
+        "message": msg,
+        "type": "message"
+      }));
+    }
+  } else {
+    console.log("Socket not connected");
+  };
 };
+
 MSG_socket.onopen = function (event) {
   Toastify({
     text: "Connected to server",
     duration: 3000,
+    selector: document.getElementById('toastify-container'),
   }).showToast();
   var data = {
     "type": "init",
@@ -489,8 +504,8 @@ MSG_socket.onmessage = function (event) {
       style: {
         background: "linear-gradient(to right, #57C84D, #2EB62C)",
       },
+      selector: document.getElementById('toastify-container'),
     }).showToast();
-    sendMessage("Hello World");
   } else if (data["type"] == "join") {
     Toastify({
       text: data["name"] + " joined the room",
@@ -498,6 +513,7 @@ MSG_socket.onmessage = function (event) {
       style: {
         background: "linear-gradient(to right, #57C84D, #2EB62C)",
       },
+      selector: document.getElementById('toastify-container'),
     }).showToast();
   } else if (data["type"] == "leave") {
     Toastify({
@@ -506,11 +522,19 @@ MSG_socket.onmessage = function (event) {
       style: {
         background: "linear-gradient(to right, #EA4C46, #DC1C13)",
       },
+      selector: document.getElementById('toastify-container'),
     }).showToast();
   } else if (data["type"] == "message") {
     Toastify({
       text: data["name"] + ": " + data["message"],
       duration: 8000,
+      selector: document.getElementById('toastify-container'),
+    }).showToast();
+  } else if (data["type"] == "clients") {
+    Toastify({
+      text: "Users in room: " + data["clients"],
+      duration: 8000,
+      selector: document.getElementById('toastify-container'),
     }).showToast();
   } else if (data["type"] == "leave_forced") {
     Toastify({
@@ -519,6 +543,7 @@ MSG_socket.onmessage = function (event) {
       style: {
         background: "linear-gradient(to right, #EA4C46, #DC1C13)",
       },
+      selector: document.getElementById('toastify-container'),
     }).showToast();
   };
 };
@@ -541,6 +566,7 @@ MSG_socket.onclose = function (event) {
         style: {
           background: "linear-gradient(to right, #EA4C46, #DC1C13)",
         },
+        selector: document.getElementById('toastify-container'),
       }).showToast();
     } else {
       Toastify({
@@ -549,6 +575,7 @@ MSG_socket.onclose = function (event) {
         style: {
           background: "linear-gradient(to right, #EA4C46, #DC1C13)",
         },
+        selector: document.getElementById('toastify-container'),
       }).showToast();
     }
   } else {
@@ -558,6 +585,7 @@ MSG_socket.onclose = function (event) {
       style: {
         background: "linear-gradient(to right, #EA4C46, #DC1C13)",
       },
+      selector: document.getElementById('toastify-container'),
     }).showToast();
   }
 };
@@ -569,6 +597,7 @@ MSG_socket.onerror = function (error) {
     style: {
       background: "linear-gradient(to right, #EA4C46, #DC1C13)",
     },
+    selector: document.getElementById('toastify-container'),
   }).showToast();
-  console.log("Unknown Error: "+error);
+  console.log("Unknown Error: " + error);
 };
