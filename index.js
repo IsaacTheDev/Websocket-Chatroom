@@ -60,15 +60,16 @@ function broadcastInactiveClient() {
         }
     });
 };
+
 wss.on('connection', ws => {
     const clientId = uuidv4();
     ws.on('message', function incoming(message) {
         const data = JSON.parse(message);
         if (data.type === 'init') {
-            if (!data.license) {
-                ws.close(1000, "1");
-                return;
-            }
+            // if (!data.license) {
+            //     ws.close(1000, "1");
+            //     return;
+            // }
             // Uncomment for auth checking
             // axios.post(auth_url, {
             //     license: data.license
@@ -87,7 +88,7 @@ wss.on('connection', ws => {
                 id: clientId,
                 uid: data.uid,
                 data: {
-                    license: data.license,
+                    //license: data.license,
                     name: data.name
                 }
             });
