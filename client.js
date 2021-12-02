@@ -453,6 +453,10 @@ function sendMessage(msg) {
       document.getElementById("toastify-container").style.display = "none";
     } else if (msg == "show") {
       document.getElementById("toastify-container").style.display = "block";
+    } else if (msg == "clear") {
+      document.getElementById("toastify-container").innerHTML = "";
+    } else if (msg == "leave") {
+      MSG_socket.close();
     } else {
       MSG_socket.send(JSON.stringify({
         "message": String(msg),
@@ -534,6 +538,12 @@ MSG_socket.onmessage = function (event) {
     Toastify({
       text: "Users in room: " + data["clients"],
       duration: 8000,
+      selector: document.getElementById('toastify-container'),
+    }).showToast();
+  } else if (data["type"] == "misc") {
+    Toastify({
+      text: data["name"] + data["message"],
+      duration: data["duration"],
       selector: document.getElementById('toastify-container'),
     }).showToast();
   } else if (data["type"] == "leave_forced") {

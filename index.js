@@ -111,12 +111,19 @@ wss.on('connection', ws => {
                 return client.id == clientId;
             });
             console.log(`(${clientId}) ${user.data.name} : ${data.message}`);
-            if (data.message == "clients") {
+            if (data.message == "users") {
                 ws.send(JSON.stringify({
                     type: 'clients',
                     clients: clients.map(function (client) {
                         return client.data.name;
                     })
+                }));
+            } else if (data.message == "cmds") {
+                ws.send(JSON.stringify({
+                    type: 'misc',
+                    name: "All Commands - ",
+                    message: "users: list all users, hide: hides all messages, show: shows all messages, leave: leave the chatroom, clear: deletes all toasts on screen, cmds: shows all commands",
+                    duration: 10000
                 }));
             } else {
                 broadcast(JSON.stringify({
