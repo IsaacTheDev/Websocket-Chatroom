@@ -136,7 +136,7 @@ fastify.get('/websocket', { websocket: true }, (connection, req) => {
     });
 });
 
-fastify.listen(process.env.PORT || 8080, function (err, address) {
-    if (err) throw err;
-    console.log(`Server listening on ${address}`);
-});
+fastify.listen(process.env.PORT || 3000, function (err) {
+    if (err) throw err
+    console.log(`server listening on ${fastify.server.address().port}`)
+  })
