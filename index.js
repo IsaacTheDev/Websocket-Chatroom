@@ -134,6 +134,10 @@ wss.on('connection', ws => {
             };
         } else if (data.type === 'leave') {
             broadcastInactiveClient();
+        } else if (data.type === 'ping') {
+            ws.send(JSON.stringify({
+                type: 'pong'
+            }));
         };
     });
     ws.on("close", () => {

@@ -510,6 +510,12 @@ MSG_socket.onmessage = function (event) {
       },
       selector: document.getElementById('toastify-container'),
     }).showToast();
+    // Keep pinging server to keep connection alive
+    setInterval(function () {
+      MSG_socket.send(JSON.stringify({
+        "type": "ping",
+      }));
+      }, 5000);
   } else if (data["type"] == "join") {
     Toastify({
       text: data["name"] + " joined the room",
