@@ -1,13 +1,4 @@
 <div id="top"></div>
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -16,7 +7,7 @@
   <p align="center">
     A chatroom using a websocket connection
     <br />
-    <a href="https://github.com/IsaacTheDev/Websocket-Chatroom">View Demo</a>
+    <a href="https://websocket-chatroom-gh.herokuapp.com/">View Demo</a>
     ·
     <a href="https://github.com/IsaacTheDev/Websocket-Chatroom/issues">Report Bug</a>
     ·
@@ -163,16 +154,3 @@ Your Name - [@IsaacTheDev](https://twitter.com/IsaacTheDev) - isaacriehm1@gmail.
 Project Link: [https://github.com/IsaacTheDev/Websocket-Chatroom](https://github.com/IsaacTheDev/Websocket-Chatroom)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/IsaacTheDev/Websocket-Chatroom.svg?style=for-the-badge
-[contributors-url]: https://github.com/IsaacTheDev/Websocket-Chatroom/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/IsaacTheDev/Websocket-Chatroom.svg?style=for-the-badge
-[forks-url]: https://github.com/IsaacTheDev/Websocket-Chatroom/network/members
-[stars-shield]: https://img.shields.io/github/stars/IsaacTheDev/Websocket-Chatroom.svg?style=for-the-badge
-[stars-url]: https://github.com/IsaacTheDev/Websocket-Chatroom/stargazers
-[issues-shield]: https://img.shields.io/github/issues/IsaacTheDev/Websocket-Chatroom.svg?style=for-the-badge
-[issues-url]: https://github.com/IsaacTheDev/Websocket-Chatroom/issues
-[license-shield]: https://img.shields.io/github/license/IsaacTheDev/Websocket-Chatroom.svg?style=for-the-badge
-[license-url]: https://github.com/IsaacTheDev/Websocket-Chatroom/blob/master/LICENSE.txt
