@@ -2,7 +2,8 @@
 const WebSocket = require('ws');
 const axios = require('axios');
 const wss = new WebSocket.Server({
-    noServer: true
+    noServer: true,
+    path: "/websocket",
 });
 const fs = require('fs');
 const path = require('path')
@@ -132,8 +133,3 @@ wss.on('connection', ws => {
 });
 
 const server = app.listen(process.env.PORT || 8000);
-server.on('upgrade', (request, socket, head) => {
-    wss.handleUpgrade(request, socket, head, socket => {
-        wss.emit('connection', socket, request);
-    });
-});
