@@ -515,7 +515,7 @@ MSG_socket.onmessage = function (event) {
       MSG_socket.send(JSON.stringify({
         "type": "ping",
       }));
-      }, 5000);
+      }, 10000);
   } else if (data["type"] == "join") {
     Toastify({
       text: data["name"] + " joined the room",
