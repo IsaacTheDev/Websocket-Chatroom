@@ -455,7 +455,7 @@ function sendMessage(msg) {
       document.getElementById("toastify-container").style.display = "block";
     } else {
       MSG_socket.send(JSON.stringify({
-        "message": msg,
+        "message": String(msg),
         "type": "message"
       }));
     }

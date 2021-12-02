@@ -13,7 +13,7 @@
     </div>
     <div id="client">
         <input type="text" id="message" placeholder="Message" />
-        <button onclick="sendMessage()">Send</button>
+        <button onclick="sendMessage(document.getElementById('message').value)">Send</button>
     </div>
     <script>
         function loadClient() {
