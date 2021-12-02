@@ -1,6 +1,7 @@
 // Require all the modules
 const WebSocket = require('ws');
 const axios = require('axios');
+const fs = require('fs');
 const wss = new WebSocket.Server({
     noServer: true
 });
@@ -12,9 +13,6 @@ const fastify = require('fastify')({
 fastify.register(require('fastify-websocket'), {
     ws: wss
 });
-fastify.register(require('fastify-static'), {
-    root: path.join(__dirname, '')
-});
 
 // Set variables
 const clients = [];
@@ -23,11 +21,13 @@ const auth_url = "yoururlhere";
 console.log("Starting server...");
 
 fastify.get('/', function (request, reply) {
-    reply.sendFile('index.html');
+    const bufferIndexHtml = fs.readFileSync('index.html')
+    reply.type('text/html').send(bufferIndexHtml)
 });
 
 fastify.get('/client.js', function (request, reply) {
-    reply.sendFile('client.js');
+    const bufferIndexHtml = fs.readFileSync('client.js')
+    reply.type('text/javascript').send(bufferIndexHtml)
 });
 
 function uuidv4() {
@@ -139,4 +139,4 @@ fastify.get('/websocket', { websocket: true }, (connection, req) => {
 fastify.listen(process.env.PORT || 3000, function (err) {
     if (err) throw err
     console.log(`server listening on ${fastify.server.address().port}`)
-  })
+  });
