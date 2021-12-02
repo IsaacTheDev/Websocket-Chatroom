@@ -1,17 +1,18 @@
 // Require all the modules
 const WebSocket = require('ws');
 const axios = require('axios');
-const wss = new WebSocket.Server({
-    noServer: true,
-    path: "/websocket",
-});
 const fs = require('fs');
 const path = require('path')
+const http = require('http');
 var UsernameGenerator = require('username-generator');
 var express = require('express');
 var app = express();
 
 // Set variables
+const server = http.createServer(app);
+const wss = new WebSocket.Server({
+    server
+});
 const clients = [];
 const auth_url = "yoururlhere";
 
@@ -132,4 +133,4 @@ wss.on('connection', ws => {
     });
 });
 
-const server = app.listen(process.env.PORT || 8000);
+server.listen(process.env.PORT || 8000);
