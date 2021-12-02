@@ -1,18 +1,14 @@
 // Require all the modules
 const WebSocket = require('ws');
 const axios = require('axios');
-const fs = require('fs');
 const wss = new WebSocket.Server({
     noServer: true
 });
+const fs = require('fs');
 const path = require('path')
 var UsernameGenerator = require('username-generator');
-const fastify = require('fastify')({
-    logger: false
-});
-fastify.register(require('fastify-websocket'), {
-    ws: wss
-});
+var express = require('express');
+var app = express();
 
 // Set variables
 const clients = [];
@@ -20,12 +16,12 @@ const auth_url = "yoururlhere";
 
 console.log("Starting server...");
 
-fastify.get('/', function (request, reply) {
+app.get('/', function (request, reply) {
     const bufferIndexHtml = fs.readFileSync('index.html')
-    reply.type('text/html').send(bufferIndexHtml)
+    reply.type('text/html').send(bufferIndexHtml);
 });
 
-fastify.get('/client.js', function (request, reply) {
+app.get('/client.js', function (request, reply) {
     const bufferIndexHtml = fs.readFileSync('client.js')
     reply.type('text/javascript').send(bufferIndexHtml)
 });
@@ -62,14 +58,13 @@ function broadcastInactiveClient() {
         }
     });
 };
-
-fastify.get('/websocket', { websocket: true }, (connection, req) => {
+wss.on('connection', ws => {
     const clientId = uuidv4();
-    connection.socket.on('message', function incoming(message) {
+    ws.on('message', function incoming(message) {
         const data = JSON.parse(message);
         if (data.type === 'init') {
             if (!data.license) {
-                connection.socket.close(1000, "1");
+                ws.close(1000, "1");
                 return;
             }
             // Uncomment for auth checking
@@ -86,7 +81,7 @@ fastify.get('/websocket', { websocket: true }, (connection, req) => {
             console.log(`(${clientId}) ${data.name} joined`);
 
             clients.push({
-                ws: connection.socket,
+                ws: ws,
                 id: clientId,
                 uid: data.uid,
                 data: {
@@ -101,11 +96,11 @@ fastify.get('/websocket', { websocket: true }, (connection, req) => {
             }));
             // Uncomment for Auth Checking
             // } else {
-            //     connection.socket.close(1000, "1");
+            //     ws.close(1000, "1");
             //     return;
             // };
             // }).catch(function (error) {
-            //     connection.socket.close(1000, "2");
+            //     ws.close(1000, "2");
             //     return;
             // });
         } else if (data.type === 'message') {
@@ -114,7 +109,7 @@ fastify.get('/websocket', { websocket: true }, (connection, req) => {
             });
             console.log(`(${clientId}) ${user.data.name} : ${data.message}`);
             if (data.message == "clients") {
-                connection.socket.send(JSON.stringify({
+                ws.send(JSON.stringify({
                     type: 'clients',
                     clients: clients.map(function (client) {
                         return client.data.name;
@@ -131,12 +126,14 @@ fastify.get('/websocket', { websocket: true }, (connection, req) => {
             broadcastInactiveClient();
         };
     });
-    connection.socket.on("close", () => {
+    ws.on("close", () => {
         broadcastInactiveClient();
     });
 });
 
-fastify.listen(process.env.PORT || 3000, function (err) {
-    if (err) throw err
-    console.log(`server listening on ${fastify.server.address().port}`)
-  });
+const server = app.listen(process.env.PORT || 8000);
+server.on('upgrade', (request, socket, head) => {
+    wss.handleUpgrade(request, socket, head, socket => {
+        wss.emit('connection', socket, request);
+    });
+});
